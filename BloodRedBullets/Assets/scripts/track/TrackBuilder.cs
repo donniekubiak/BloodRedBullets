@@ -43,7 +43,7 @@ public class TrackBuilder : MonoBehaviour
         //find where to create new TrackPiece
         Vector3 placement = Vector3.zero;
         if(previousPiece != null){
-            placement = previousPiece.transform.position + previousPiece.GetComponent<TrackPiece>().EndPoint.localPosition; 
+            placement = previousPiece.GetComponent<TrackPiece>().EndPoint.position; 
         }
         //create new TrackPiece, parent it to this GameObject
         GameObject newPiece = Instantiate(pieceToAdd, placement, Quaternion.identity, transform);

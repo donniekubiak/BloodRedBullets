@@ -17,9 +17,10 @@ public class TrackMover : MonoBehaviour
     /// Moves each TrackPiece, calling TrackBuilder.AddTrack when oldest TrackPiece is out of view.
     /// </summary>
     void Update(){
+        float moveAmount = moveSpeed*Time.deltaTime;
         foreach (GameObject piece in trackBuilder.GetCurrentPiecesAsList()){
             Vector3 pos = piece.transform.position;
-            piece.transform.position = new Vector3(pos.x, pos.y, pos.z -= moveSpeed*Time.deltaTime);
+            piece.transform.position = new Vector3(pos.x, pos.y, pos.z -= moveAmount);
             if (piece.GetComponent<TrackPiece>().EndPoint.position.z < -5){
                 trackBuilder.AddTrack(false);
             }
