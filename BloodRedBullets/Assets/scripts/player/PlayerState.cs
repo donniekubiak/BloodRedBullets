@@ -36,6 +36,11 @@ public class PlayerState : MonoBehaviour
     /// </summary>
     public LaneState currentLaneState {get; private set;}
 
+    [SerializeField]
+    private int maxHP = 3;
+    private int maxAmmo = 3;
+    public int HP { get; private set; }
+    public int ammo { get; private set; }
     void Start(){
         ResetAllStates();
     }
@@ -67,5 +72,27 @@ public class PlayerState : MonoBehaviour
     /// <param name="state"></param>
     public void ChangeLaneState(LaneState state) {
         currentLaneState = state;
+    }
+
+    public void TakeDamage()
+    {
+        print("hit!");
+        HP--;
+        if(HP < 0)
+        {
+            //end game :)
+        }
+    }
+
+    public void Heal(int amt)
+    {
+        if(amt == -1) //full heal
+        {
+            HP = maxHP;
+        }
+        else
+        {
+            HP = Mathf.Clamp(HP + amt, 0, maxHP);
+        }
     }
 }

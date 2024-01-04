@@ -26,10 +26,15 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="direction"> <0 means leftward movement, >=0 means rightward </param>
     public void ChangeLane(int direction){
+        bool changed = true;
         switch(playerState.currentLaneState){
             case PlayerState.LaneState.Left:
                 if (direction >= 0){
                     playerState.ChangeLaneState(PlayerState.LaneState.Middle);
+                }
+                else
+                {
+                    changed = false;
                 }
                 break;
             case PlayerState.LaneState.Middle:
@@ -44,10 +49,17 @@ public class PlayerMovement : MonoBehaviour
                 if (direction < 0){
                     playerState.ChangeLaneState(PlayerState.LaneState.Middle);
                 }
+                else
+                {
+                    changed = false;
+                }
                 break;
         }
-        playerLoc.ChangeLocation(playerState);
-        cam.Move(direction);
+        if (changed)
+        {
+            playerLoc.ChangeLocation(playerState);
+            cam.Move(direction);
+        }
     }
     public void Jump(){
         if(playerState.currentGroundState != PlayerState.GroundState.Jumping){
@@ -55,9 +67,9 @@ public class PlayerMovement : MonoBehaviour
             StopAllCoroutines();    
             IEnumerator endJumpRoutine = WaitEndJump();
             StartCoroutine(endJumpRoutine);
+            playerLoc.ChangeLocation(playerState);
+            cam.Jump(jumpTime);
         }
-        playerLoc.ChangeLocation(playerState); 
-        cam.Jump();
     }
     public void EndJump(){
         if(playerState.currentGroundState == PlayerState.GroundState.Jumping)
@@ -69,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(jumpTime);
         EndJump();
     }
-
 
     public void Slide(){
         cam.Slide();
